@@ -3,6 +3,7 @@
     #include <math.h>
     #include <SDL2/SDL.h>
     #include <SDL2/SDL_image.h>
+    #include <SDL2/SDL_ttf.h>
     #include "scenes.h"
 
 	int main() {
@@ -10,9 +11,11 @@
 		int frametime;
 		SDL_Event event;
 		scenes _scenes;
+		std::string scene = "main";
 		
 		_scenes.createWindow();
-		_scenes.loadScene("main");
+		_scenes.loadScene(scene);
+
 		while(running) {
 			frametime = SDL_GetTicks();
 			while(SDL_PollEvent(&event)) {
@@ -20,7 +23,7 @@
 			}
 			
 			SDL_RenderClear(_scenes.ren);
-			_scenes.renderScene(_scenes, "main");
+			_scenes.renderScene(_scenes, scene);
 			SDL_RenderPresent(_scenes.ren);
 			
 			

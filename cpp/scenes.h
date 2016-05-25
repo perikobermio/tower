@@ -30,9 +30,7 @@ class scenes {
 		}
 		
 		void renderScene(scenes _scenes, std::string scene) {
-			SDL_Rect spr = {0,0,7251,4018};
-			SDL_Rect dst = {0,0,_scenes.SCREEN_W,_scenes.SCREEN_H};
-			SDL_RenderCopy(_scenes.ren, _scenes.currentScene.img, &spr, &dst);
+			if(scene == "main") _scenes.renderMain(_scenes);	
 		}
 		
 		void destroyRender(scenes _scenes) {
@@ -42,7 +40,28 @@ class scenes {
             IMG_Quit();
             SDL_Quit();
         }
-       
+		
+	private:
+		void renderMain(scenes _scenes) {
+			TTF_Font* Sans = TTF_OpenFont("Sans.ttf", 48);
+			SDL_Color White = {255, 255, 255};
+			SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "put your text here", White);
+			SDL_Texture* Message = SDL_CreateTextureFromSurface(_scenes.ren, surfaceMessage);
+			
+			SDL_Rect Message_rect;
+			Message_rect.x = 100;
+			Message_rect.y = 100;
+			Message_rect.w = 100;
+			Message_rect.h = 100;
+			
+			
+			
+			SDL_Rect spr = {0,0,7251,4018};
+			SDL_Rect dst = {0,0,_scenes.SCREEN_W,_scenes.SCREEN_H};
+			SDL_RenderCopy(_scenes.ren, _scenes.currentScene.img, &spr, &dst);
+			
+			SDL_RenderCopy(_scenes.ren, Message, NULL, &Message_rect);
+		}
 	
 };
 
