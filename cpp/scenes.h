@@ -6,12 +6,12 @@ class scenes {
 		int SCREEN_W = 1500, SCREEN_H = 800;
 	
 		SDL_Window *screen;
-		SDL_Texture* mainText;
 		
 		struct sScenes {
 			SDL_Texture* img;
 			
 		} currentScene;
+		std::vector<sScenes> vScenes;
 	
 	public:
 		SDL_Renderer *ren;
@@ -21,12 +21,13 @@ class scenes {
 			SDL_Surface *img = IMG_Load(_img.c_str());
             SDL_Texture *texture = SDL_CreateTextureFromSurface(ren, img);
             SDL_FreeSurface(img);
-            currentScene.img = texture;
+			vScenes.push_back(sScenes({texture}));
             
 			TTF_Font *font = TTF_OpenFont("example.ttf", 24);
 			SDL_Color White = {255, 255, 255};
-			SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, "MIERDA!!!", White);
-			mainText = SDL_CreateTextureFromSurface(ren, surfaceMessage);
+			SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, "PLAY", White);
+			SDL_Texture* mainText = SDL_CreateTextureFromSurface(ren, surfaceMessage);
+			vScenes.push_back(sScenes({mainText}));
 		}
 	
 		void createWindow() {
@@ -35,7 +36,7 @@ class scenes {
 		}
 		
 		void renderScene(scenes _scenes, std::string scene) {
-			if(scene == "main") _scenes.renderMain(_scenes);	
+			if(scene == "main") _scenes.renderMain(_scenes);
 		}
 		
 		void destroyRender(scenes _scenes) {
@@ -50,10 +51,10 @@ class scenes {
 		void renderMain(scenes _scenes) {
 			SDL_Rect spr = {0,0,7251,4018};
 			SDL_Rect dst = {0,0,_scenes.SCREEN_W,_scenes.SCREEN_H};
-			SDL_RenderCopy(_scenes.ren, _scenes.currentScene.img, &spr, &dst);
+			SDL_RenderCopy(_scenes.ren, _scenes.vScenes[0].img, &spr, &dst);
 			
 			SDL_Rect Message_rect = {100,100,200,100};
-			SDL_RenderCopy(_scenes.ren, _scenes.mainText, NULL, &Message_rect);
+			SDL_RenderCopy(_scenes.ren, _scenes.vScenes[1].img, NULL, &Message_rect);
 		}
 	
 };
